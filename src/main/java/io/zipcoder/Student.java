@@ -13,7 +13,7 @@ public class Student {
     public Student(String firstName, String lastName, Double[] testScores) {
         this.firstName = firstName;
         this.lastName = lastName;
-        examScores = new ArrayList<Double>(Arrays.asList(testScores));
+        examScores = new ArrayList<>(Arrays.asList(testScores));
     }
 
     public String getFirstName() {
@@ -33,21 +33,19 @@ public class Student {
     }
 
     public String getExamScores() {
-        // returns a string representation of all exams taken
-        // Exam Scores:
-        //	Exam 1 -> 100
-        //	Exam 2 -> 95
-        //	Exam 3 -> 123
-        //	Exam 4 -> 96
-        StringBuilder examScoreSb = new StringBuilder("Exam Scores: \n\t");
+        StringBuilder examScoreSb = new StringBuilder("Exam Scores: \n");
         for (int i = 0; i < examScores.size(); i++) {
-            examScoreSb.append("Exam ")
+            examScoreSb.append("\tExam ")
                     .append(i + 1)
                     .append(" -> ")
                     .append(examScores.get(i))
-                    .append("\n\t");
+                    .append("\n");
         }
         return examScoreSb.toString();
+    }
+
+    public List<Double> getExamScoresList() {
+        return examScores;
     }
 
     public int getNumberOfExamsTaken() {
@@ -55,12 +53,10 @@ public class Student {
     }
 
     public void addExamScore(double testScore) {
-        // adds an exam score to exam score list
         examScores.add(testScore);
     }
 
     public void setExamScore(int examNumber, double newScore) {
-        // replaces the specified exam score with the new exam score
         if (examNumber >= examScores.size()) {
             throw new IllegalArgumentException("The student hasn't taken that many exams.");
         }
@@ -71,14 +67,21 @@ public class Student {
     }
 
     public double getAverageExamScore() {
-        // returns the sum of the examScore list, divided by size
-        return -1.0;
+        if (examScores.size() == 0) {
+            return 0.0;
+        }
+        double scoreSum = 0.0;
+        for (Double score: examScores) {
+            scoreSum += score;
+        }
+        return scoreSum / examScores.size();
     }
 
     @Override
     public String toString() {
         return "Student Name: " + firstName + " " + lastName + "\n\t"
                 + "> Average Score: " + getAverageExamScore() + "\n\t"
-                + "> " + getExamScores();
+                + "> "
+                + getExamScores();
     }
 }
