@@ -1,6 +1,6 @@
 package io.zipcoder;
 
-import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ClassroomTest {
     Student student9;
     Student student10;
     Classroom testClass;
-
+    Classroom threeStudentsCR;
 
     @Before
     public void setUp() {
@@ -44,10 +44,8 @@ public class ClassroomTest {
         Student[] groupStudents = {student1, student2, student3, student4, student5,
                 student6, student7, student8, student9, student10};
         testClass = new Classroom(groupStudents);
-    }
-
-    @After
-    public void tearDown() throws Exception {
+        Student[] threeStudentsArr = {student1, student4, student9};
+        threeStudentsCR = new Classroom(threeStudentsArr);
     }
 
     @Test
@@ -62,15 +60,86 @@ public class ClassroomTest {
     }
 
     @Test
-    public void getAverageExamScore() {
+    public void getStudentsTest() {
+        Student[] expected = {student1, student2, student3, student4, student5,
+            student6, student7, student8, student9, student10};
+        Student[] returned = testClass.getStudents();
+        Assert.assertArrayEquals(expected, returned);
     }
+
+    @Test
+    public void getAverageExamScore_tenStudents() {
+        double expected = 65.83;
+        double returned = testClass.getAverageExamScore();
+        Assert.assertEquals(expected, returned, 0.0000001);
+    }
+
+    @Test
+    public void getAverageExamScore_threeStudents() {
+        double expected = 75.11;
+        double returned = threeStudentsCR.getAverageExamScore();
+        Assert.assertEquals(expected, returned, 0.0000001);
+    }
+
+    @Test
+    public void roundTo2DecimalPlaces_roundUp() {
+        double input = 543.655;
+        double expected = 543.66;
+        double returned = testClass.roundTo2DecimalPlaces(input);
+        Assert.assertEquals(expected, returned, .001);
+    }
+
+    @Test
+    public void roundTo2DecimalPlaces_roundDown() {
+        double input = 543.650;
+        double expected = 543.65;
+        double returned = testClass.roundTo2DecimalPlaces(input);
+        Assert.assertEquals(expected, returned, .001);
+    }
+
+    @Test
+    public void roundTo2DecimalPlaces_negativeRoundUp() {
+        double input = -543.655;
+        double expected = -543.65;
+        double returned = testClass.roundTo2DecimalPlaces(input);
+        Assert.assertEquals(expected, returned, .001);
+    }
+
 
     @Test
     public void addStudent() {
+        Student addedStudent = new Student("New", "Student", new Double[0]);
+        testClass.addStudent(addedStudent);
+        Student[] expected = {student1, student2, student3, student4, student5,
+                student6, student7, student8, student9, student10, addedStudent};
+        Student[] returned = testClass.getStudents();
+        Assert.assertArrayEquals(expected, returned);
     }
 
     @Test
-    public void removeStudent() {
+    public void removeStudent_studentFoundReturnsTrue() {
+        String inputFirstName = "A";
+        String inputLastName = "A";
+        boolean successfulRemove = testClass.removeStudent(inputFirstName, inputLastName);
+        Assert.assertTrue(successfulRemove);
+    }
+
+    @Test
+    public void removeStudent_studentNotFoundReturnsFalse() {
+        String inputFirstName = "Z";
+        String inputLastName = "Z";
+        boolean isRemoved = testClass.removeStudent(inputFirstName, inputLastName);
+        Assert.assertFalse(isRemoved);
+    }
+
+    @Test
+    public void removeStudent_remove1stStudentLastValueOfArrayNull() {
+        Student[] arrayBeforeRemove = testClass.getStudents();
+        String inputFirstName = "A";
+        String inputLastName = "A";
+        testClass.removeStudent(inputFirstName, inputLastName);
+        Student[] arrayAfterRemove = testClass.getStudents();
+        Assert.assertNull(arrayAfterRemove[arrayAfterRemove.length - 1]);
     }
 
     @Test

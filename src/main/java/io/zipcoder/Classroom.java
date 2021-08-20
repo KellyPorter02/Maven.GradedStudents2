@@ -26,23 +26,52 @@ public class Classroom {
     }
 
     public double getAverageExamScore() {
-        // returns the sum of all exam averages divided by the number of students.
         double avgExamScoreSum = 0.0;
         for (Student student: students) {
             avgExamScoreSum += student.getAverageExamScore();
         }
-        return avgExamScoreSum / students.length;
+        double result = avgExamScoreSum / students.length;
+        return roundTo2DecimalPlaces(result);
     }
 
-    public void addStudent(Student student) {
-        // adds a student to the students list
+    double roundTo2DecimalPlaces(double input) {
+        return Math.round(input * 100.0) / 100.0;
     }
 
-    public void removeStudent(String firstName, String lastName) {
-        // The class Classroom should define a method which uses a firstName and lastName parameter to identify
-        // and remove the respective student from composite students object.
-        // Ensure the array is re-ordered after the removal;
-        // Null values should be located in the final indices of the array.
+    public void addStudent(Student studentToAdd) {
+        Student[] plusOneArray = Arrays.copyOf(students, students.length + 1);
+        plusOneArray[plusOneArray.length - 1] = studentToAdd;
+        students = plusOneArray;
+    }
+
+    public boolean removeStudent(String firstName, String lastName) {
+        int removeIdx = findIndexOfStudentToRemove(firstName, lastName);
+        if (removeIdx < 0) {
+            return false;
+        }
+        for (int i = 0; i < students.length; i++) {
+            if (i == students.length - 1) {
+                students[i] = null;
+            }
+            if (i >= removeIdx && i < students.length - 1) {
+                students[i] = students[i + 1];
+            }
+        }
+        return true;
+    }
+
+    int findIndexOfStudentToRemove(String firstName, String lastName) {
+        for (int i = 0; i < students.length; i++) {
+            if (shouldBeRemoved(firstName, lastName, students[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    boolean shouldBeRemoved(String firstName, String lastName, Student student) {
+        return firstName.compareTo(student.getFirstName()) == 0
+                && lastName.compareTo(student.getLastName()) == 0;
     }
 
     public Student[] getStudentByScore() {

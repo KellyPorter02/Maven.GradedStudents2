@@ -176,4 +176,13 @@ public class StudentTest {
         String returned = testStudent.toString();
         Assert.assertEquals(expected, returned);
     }
+
+    @Test
+    public void compareTo_hunterLessThanPorter() { // Porter, Hunter
+        Student testStudent2 =
+                new Student("Kelly", "Porter", new Double[0]);
+        int expected = -8;
+        int returned = testStudent.compareTo(testStudent2);
+        Assert.assertEquals(expected, returned);
+    }
 }
