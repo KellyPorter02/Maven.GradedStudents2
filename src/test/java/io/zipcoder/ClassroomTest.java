@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class ClassroomTest {
 
     Student student1;
@@ -134,7 +136,6 @@ public class ClassroomTest {
 
     @Test
     public void removeStudent_remove1stStudentLastValueOfArrayNull() {
-        Student[] arrayBeforeRemove = testClass.getStudents();
         String inputFirstName = "A";
         String inputLastName = "A";
         testClass.removeStudent(inputFirstName, inputLastName);
@@ -143,8 +144,33 @@ public class ClassroomTest {
     }
 
     @Test
-    public void getStudentByScore() {
+    public void getStudentByScore_student4HigherScoreThanS1() {
+        Student[] inputStudentArray = {student1, student4};
+        Classroom testClass2 = new Classroom(inputStudentArray);
+        Student[] arrayExpected = {student4, student1};
+        Student[] arrayReturned = testClass2.getStudentByScore();
+        Assert.assertArrayEquals(arrayExpected, arrayReturned);
     }
+
+    @Test
+    public void getStudentByScore_student1AndS7SameScore_SortByLastName() {
+        Student[] inputStudentArray = {student7, student1};
+        Classroom testClass3 = new Classroom(inputStudentArray);
+        Student[] arrayExpected = {student1, student7};
+        Student[] arrayReturned = testClass3.getStudentByScore();
+        Assert.assertArrayEquals(arrayExpected, arrayReturned);
+    }
+
+    @Test
+    public void getStudentByScore_tenStudentsSortAndSortByLastName() {
+        Student[] arrayExpected = {student9, student4, student10, student8, student1,
+                student7, student6, student5, student2, student3};
+        Student[] arrayReturned = testClass.getStudentByScore();
+        System.out.println(Arrays.toString(arrayReturned));
+        Assert.assertArrayEquals(arrayExpected, arrayReturned);
+    }
+
+
 
     @Test
     public void getGradeBook() {

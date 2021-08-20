@@ -75,13 +75,14 @@ public class Classroom {
     }
 
     public Student[] getStudentByScore() {
-        // which returns an array representation of Student objects sorted in descending order by score.
-        //If two students have the same class average, order them lexigraphically.
-        Comparator<Student> c = (s1, s2) -> (int) (s1.getAverageExamScore() - s2.getAverageExamScore());
+        // returns an array representation of Student objects sorted in descending order by score.
+        // If two students have the same class average, order them lexicographically.
+
+        Comparator<Student> c = Comparator.comparing(Student::getAverageExamScore).reversed();
+        c = c.thenComparing(s -> s.getLastName());
         Arrays.sort(students, c);
         return students;
     }
-
 
     public Map<Character, List<Student>> getGradeBook() {
         return null;
@@ -95,5 +96,6 @@ public class Classroom {
 //        this.getAverageExamScore()
         return -1;
     }
+
 
 }
