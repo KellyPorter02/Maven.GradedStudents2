@@ -70,7 +70,6 @@ public class StudentTest {
                 "\tExam 3 -> 250.0\n" +
                 "\tExam 4 -> 0.0\n";
         String returned = testStudent.getExamScores();
-        System.out.println(returned);
         Assert.assertEquals(expected, returned);
     }
 
@@ -175,7 +174,6 @@ public class StudentTest {
                 "\tExam 3 -> 250.0\n" +
                 "\tExam 4 -> 0.0\n";
         String returned = testStudent.toString();
-        System.out.println(returned);
         Assert.assertEquals(expected, returned);
     }
 }
